@@ -16,63 +16,16 @@ def fetch_newsdata_news(api_key, keywords):
         st.error(f"Failed to fetch news for {keywords} from Newsdata.io. Status code: {response.status_code}")
         return []
 
-'''
+
 def fetch_google_trends():
     """Fetch trending topics from Google Trends."""
     pytrends = TrendReq(hl="en-US", tz=360)
     trending_searches = pytrends.trending_searches(pn="united_states")  # Change location as needed
     trending_topics = trending_searches.head(10).values.flatten().tolist()
     return trending_topics
-'''
 
 
-'''
-def fetch_google_trends_top_stories(keywords):
-    """Fetch top stories or related queries for specific keywords from Google Trends."""
-    pytrends = TrendReq(hl="en-US", tz=360)
-    top_stories = {}
 
-    for keyword in keywords:
-        try:
-            # Build payload for the specific keyword
-            pytrends.build_payload([keyword], cat=0, timeframe="now 7-d", geo="", gprop="")
-            related_queries = pytrends.related_queries()
-            
-            # Extract 'top' queries if available
-            if keyword in related_queries and related_queries[keyword]["top"] is not None:
-                top_stories[keyword] = related_queries[keyword]["top"]
-            else:
-                top_stories[keyword] = None
-        except Exception as e:
-            top_stories[keyword] = None
-            st.error(f"Error fetching Google Trends data for {keyword}: {e}")
-
-    return top_stories
-'''
-
-'''
-def fetch_google_trends_top_stories(keywords):
-    """Fetch top stories or related queries for specific keywords from Google Trends."""
-    pytrends = TrendReq(hl="en-US", tz=360)
-    top_stories = {}
-
-    for keyword in keywords:
-        try:
-            # Build payload for the specific keyword
-            pytrends.build_payload([keyword], timeframe="now 7-d", geo="", gprop="")
-            related_queries = pytrends.related_queries()
-
-            # Extract 'top' queries if available
-            if related_queries and keyword in related_queries and related_queries[keyword]["top"] is not None:
-                top_stories[keyword] = related_queries[keyword]["top"]
-            else:
-                top_stories[keyword] = None
-        except Exception as e:
-            top_stories[keyword] = None
-            st.error(f"Error fetching Google Trends data for {keyword}: {e}")
-
-    return top_stories
-'''
 
 
 def fetch_newsapi_trending(api_key, keywords):
@@ -122,7 +75,7 @@ for topic, keywords in topics.items():
     else:
         st.write(f"No news articles found for {topic}.")
 
-'''
+
 # Google Trends Section
 st.header("Trending Topics from Google Trends")
 google_trends = fetch_google_trends()
@@ -133,46 +86,8 @@ if google_trends:
 else:
     st.write("No trending topics available from Google Trends.")
 
-'''
 
-'''
-# Google Trends Section: Top Stories for Specific Topics
-st.header("Top Stories from Google Trends")
-for topic in ["fintech", "financial technology"]:
-    st.subheader(f"Top Stories for {topic.capitalize()}")
-    top_stories = fetch_top_stories(topic)
 
-    if top_stories:
-        for story in top_stories.itertuples():
-            st.markdown(f"### {story.query}")
-            st.write(f"Relevance: {story.value}")
-            st.write("---")
-    else:
-        st.write(f"No top stories found for {topic}.")
-
-'''
-
-'''
-# Google Trends Section: Top Stories for Specific Topics
-st.header("Top Stories from Google Trends")
-
-# Define topics to fetch
-google_trends_topics = ["fintech", "financial technology"]
-
-# Fetch top stories
-google_trends_top_stories = fetch_google_trends_top_stories(google_trends_topics)
-
-for topic, stories in google_trends_top_stories.items():
-    st.subheader(f"Top Stories for {topic.capitalize()}")
-    
-    if stories is not None and not stories.empty:
-        for _, story in stories.iterrows():
-            st.markdown(f"### {story['query']}")
-            st.write(f"Relevance: {story['value']}")
-            st.write("---")
-    else:
-        st.write(f"No top stories found for {topic}.")
-'''
 
 # NewsAPI.org Section
 st.header("News from NewsAPI.org")
