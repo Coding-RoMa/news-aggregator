@@ -25,6 +25,8 @@ def fetch_google_trends():
     return trending_topics
 '''
 
+
+'''
 def fetch_google_trends_top_stories(keywords):
     """Fetch top stories or related queries for specific keywords from Google Trends."""
     pytrends = TrendReq(hl="en-US", tz=360)
@@ -38,6 +40,29 @@ def fetch_google_trends_top_stories(keywords):
             
             # Extract 'top' queries if available
             if keyword in related_queries and related_queries[keyword]["top"] is not None:
+                top_stories[keyword] = related_queries[keyword]["top"]
+            else:
+                top_stories[keyword] = None
+        except Exception as e:
+            top_stories[keyword] = None
+            st.error(f"Error fetching Google Trends data for {keyword}: {e}")
+
+    return top_stories
+'''
+
+def fetch_google_trends_top_stories(keywords):
+    """Fetch top stories or related queries for specific keywords from Google Trends."""
+    pytrends = TrendReq(hl="en-US", tz=360)
+    top_stories = {}
+
+    for keyword in keywords:
+        try:
+            # Build payload for the specific keyword
+            pytrends.build_payload([keyword], timeframe="now 7-d", geo="", gprop="")
+            related_queries = pytrends.related_queries()
+
+            # Extract 'top' queries if available
+            if related_queries and keyword in related_queries and related_queries[keyword]["top"] is not None:
                 top_stories[keyword] = related_queries[keyword]["top"]
             else:
                 top_stories[keyword] = None
@@ -109,6 +134,7 @@ else:
 
 '''
 
+'''
 # Google Trends Section: Top Stories for Specific Topics
 st.header("Top Stories from Google Trends")
 for topic in ["fintech", "financial technology"]:
@@ -123,6 +149,27 @@ for topic in ["fintech", "financial technology"]:
     else:
         st.write(f"No top stories found for {topic}.")
 
+'''
+
+# Google Trends Section: Top Stories for Specific Topics
+st.header("Top Stories from Google Trends")
+
+# Define topics to fetch
+google_trends_topics = ["fintech", "financial technology"]
+
+# Fetch top stories
+google_trends_top_stories = fetch_google_trends_top_stories(google_trends_topics)
+
+for topic, stories in google_trends_top_stories.items():
+    st.subheader(f"Top Stories for {topic.capitalize()}")
+    
+    if stories is not None and not stories.empty:
+        for _, story in stories.iterrows():
+            st.markdown(f"### {story['query']}")
+            st.write(f"Relevance: {story['value']}")
+            st.write("---")
+    else:
+        st.write(f"No top stories found for {topic}.")
 
 
 # NewsAPI.org Section
