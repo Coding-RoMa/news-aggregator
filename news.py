@@ -16,12 +16,38 @@ def fetch_newsdata_news(api_key, keywords):
         st.error(f"Failed to fetch news for {keywords} from Newsdata.io. Status code: {response.status_code}")
         return []
 
+'''
 def fetch_google_trends():
     """Fetch trending topics from Google Trends."""
     pytrends = TrendReq(hl="en-US", tz=360)
     trending_searches = pytrends.trending_searches(pn="united_states")  # Change location as needed
     trending_topics = trending_searches.head(10).values.flatten().tolist()
     return trending_topics
+'''
+
+def fetch_google_trends_top_stories(keywords):
+    """Fetch top stories or related queries for specific keywords from Google Trends."""
+    pytrends = TrendReq(hl="en-US", tz=360)
+    top_stories = {}
+
+    for keyword in keywords:
+        try:
+            # Build payload for the specific keyword
+            pytrends.build_payload([keyword], cat=0, timeframe="now 7-d", geo="", gprop="")
+            related_queries = pytrends.related_queries()
+            
+            # Extract 'top' queries if available
+            if keyword in related_queries and related_queries[keyword]["top"] is not None:
+                top_stories[keyword] = related_queries[keyword]["top"]
+            else:
+                top_stories[keyword] = None
+        except Exception as e:
+            top_stories[keyword] = None
+            st.error(f"Error fetching Google Trends data for {keyword}: {e}")
+
+    return top_stories
+
+
 
 def fetch_newsapi_trending(api_key, keywords):
     """Fetch trending news articles from NewsAPI.org."""
