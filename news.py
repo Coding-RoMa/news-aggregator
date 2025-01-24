@@ -50,6 +50,7 @@ def fetch_google_trends_top_stories(keywords):
     return top_stories
 '''
 
+'''
 def fetch_google_trends_top_stories(keywords):
     """Fetch top stories or related queries for specific keywords from Google Trends."""
     pytrends = TrendReq(hl="en-US", tz=360)
@@ -71,7 +72,7 @@ def fetch_google_trends_top_stories(keywords):
             st.error(f"Error fetching Google Trends data for {keyword}: {e}")
 
     return top_stories
-
+'''
 
 
 def fetch_newsapi_trending(api_key, keywords):
@@ -151,6 +152,7 @@ for topic in ["fintech", "financial technology"]:
 
 '''
 
+'''
 # Google Trends Section: Top Stories for Specific Topics
 st.header("Top Stories from Google Trends")
 
@@ -170,7 +172,7 @@ for topic, stories in google_trends_top_stories.items():
             st.write("---")
     else:
         st.write(f"No top stories found for {topic}.")
-
+'''
 
 # NewsAPI.org Section
 st.header("News from NewsAPI.org")
