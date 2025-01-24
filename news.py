@@ -70,6 +70,7 @@ for topic, keywords in topics.items():
     else:
         st.write(f"No news articles found for {topic}.")
 
+'''
 # Google Trends Section
 st.header("Trending Topics from Google Trends")
 google_trends = fetch_google_trends()
@@ -79,6 +80,24 @@ if google_trends:
         st.write("---")
 else:
     st.write("No trending topics available from Google Trends.")
+
+'''
+
+# Google Trends Section: Top Stories for Specific Topics
+st.header("Top Stories from Google Trends")
+for topic in ["fintech", "financial technology"]:
+    st.subheader(f"Top Stories for {topic.capitalize()}")
+    top_stories = fetch_top_stories(topic)
+
+    if top_stories:
+        for story in top_stories.itertuples():
+            st.markdown(f"### {story.query}")
+            st.write(f"Relevance: {story.value}")
+            st.write("---")
+    else:
+        st.write(f"No top stories found for {topic}.")
+
+
 
 # NewsAPI.org Section
 st.header("News from NewsAPI.org")
