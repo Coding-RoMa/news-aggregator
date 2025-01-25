@@ -40,19 +40,19 @@ def fetch_newsapi_trending(api_key, keywords):
         return []
 
 # API Keys
-NEWSDATA_API_KEY = "pub_611122f586a8fcd87bd13e911285ad9c31877"
+NEWSDATA_API_KEY = "pub_61112cfc0853bb767f3df94901bec862b8831"
 NEWSAPI_API_KEY = "50920c851b5f4f6a97e2e2246b4193f5"
 
 # Topics and their corresponding keywords
 topics = {
     "Fintech": "fintech",
     "Blockchain": "blockchain",
-    "Cryptocurrency": "cryptocurrency",
+    #"Cryptocurrency": "cryptocurrency",
     "Banking": "banking",
-    "SaaS": "saas",
-    "Fintech Innovation": "fintech innovation",
+    #"SaaS": "saas",
+    #"Fintech Innovation": "fintech innovation",
     "Payment Innovation": "payment innovation",
-    "Financial Technology": "financial technology",
+    #"Financial Technology": "financial technology",
     "Artificial Intelligence": "artificial intelligence",
 }
 
@@ -67,7 +67,8 @@ for topic, keywords in topics.items():
     news_articles = fetch_newsdata_news(NEWSDATA_API_KEY, keywords)
 
     if news_articles:
-        for article in news_articles[:6]:  # Limit to 6 articles per topic
+        #for article in news_articles[:6]:  # Limit to 6 articles per topic
+        for article in news_articles[:5]:
             st.markdown(f"### [{article['title']}]({article['link']})")
             st.write(f"Published by: {article.get('source_id', 'Unknown')}" or "Unknown")
             st.write(f"Published on: {article.get('pubDate', 'Unknown')}")
@@ -96,7 +97,8 @@ for topic, keywords in topics.items():
     news_articles = fetch_newsapi_trending(NEWSAPI_API_KEY, keywords)
 
     if news_articles:
-        for article in news_articles[:6]:  # Limit to 6 articles per topic
+        #for article in news_articles[:6]:  # Limit to 6 articles per topic
+        for article in news_articles[:5]:
             st.markdown(f"### [{article['title']}]({article['url']})")
             st.write(f"Published by: {article['source']['name']}" or "Unknown")
             st.write(f"Published on: {article.get('publishedAt', 'Unknown')}")
